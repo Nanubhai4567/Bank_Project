@@ -1,14 +1,14 @@
 package com.wecp.progressive.controller;
 
 import com.wecp.progressive.entity.Accounts;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 public class AccountController {
+  
 
 
     public ResponseEntity<List<Accounts>> getAllAccounts() {
