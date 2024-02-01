@@ -1,16 +1,24 @@
 package com.wecp.progressive.entity;
 import java.util.Date;
 
-public class Transactions {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class Transactions {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
     private int accountId;
     private double amount;
     private String transactionType;
     private Date transactionDate;
 
+
     public Transactions() {
-        
+        //
     }
 
     public Transactions(int transactionId, int accountId, double amount, Date timestamp, String transactionType) {
@@ -61,4 +69,5 @@ public class Transactions {
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
     }
+   
 }

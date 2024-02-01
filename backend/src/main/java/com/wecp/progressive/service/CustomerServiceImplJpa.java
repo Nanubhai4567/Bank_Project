@@ -5,36 +5,49 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wecp.progressive.entity.Customers;
+import com.wecp.progressive.repository.CustomerRepository;
 
 @Service
 public class CustomerServiceImplJpa implements CustomerService{
+    
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public List<Customers> list = new ArrayList<>();
 
+    
+
+    public CustomerServiceImplJpa(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
     @Override
     public List<Customers> getAllCustomers() throws SQLException {
-        return null;
+        return customerRepository.findAll();
     }
 
     @Override
     public Customers getCustomerById(int customerId) throws SQLException {
-        return null;
+        return customerRepository.findById(customerId).get();
     }
 
     @Override
     public int addCustomer(Customers customers) throws SQLException {
-        return -1;
+        return customerRepository.save(customers).getCustomerId();
     }
 
     @Override
     public void updateCustomer(Customers customers) throws SQLException {
+        customerRepository.save(customers);
     }
 
     @Override
     public void deleteCustomer(int customerId) throws SQLException {
+        customerRepository.deleteById(customerId);
     }
 
     @Override
