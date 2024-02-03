@@ -1,9 +1,9 @@
-
 package com.wecp.progressive.service;
 
 
 import com.wecp.progressive.dao.AccountDAO;
 import com.wecp.progressive.entity.Accounts;
+import com.wecp.progressive.exception.AccountNotFoundException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Accounts getAccountById(int accountId) throws SQLException {
+    public Accounts getAccountById(int accountId) throws SQLException{
         return accountDAO.getAccountById(accountId);
     }
 

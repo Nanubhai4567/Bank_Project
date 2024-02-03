@@ -1,12 +1,7 @@
 package com.wecp.progressive.exception;
 
-public class OutOfBalanceException extends Exception {
-
-    public OutOfBalanceException() {
-    }
-
+public class OutOfBalanceException extends RuntimeException {
     public OutOfBalanceException(String message) {
         super(message);
     }
-    
 }

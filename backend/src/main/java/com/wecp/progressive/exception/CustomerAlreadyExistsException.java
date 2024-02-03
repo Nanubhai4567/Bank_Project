@@ -1,12 +1,7 @@
 package com.wecp.progressive.exception;
 
-public class CustomerAlreadyExistsException extends Exception{
-
-    public CustomerAlreadyExistsException() {
-    }
-
+public class CustomerAlreadyExistsException extends RuntimeException {
     public CustomerAlreadyExistsException(String message) {
         super(message);
     }
-    
 }

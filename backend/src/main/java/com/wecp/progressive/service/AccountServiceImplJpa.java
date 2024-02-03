@@ -1,28 +1,22 @@
 package com.wecp.progressive.service;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import com.wecp.progressive.entity.Accounts;
 import com.wecp.progressive.exception.AccountNotFoundException;
 import com.wecp.progressive.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class AccountServiceImplJpa implements AccountService {
-    @Autowired
+public class AccountServiceImplJpa implements AccountService{
+
     private AccountRepository accountRepository;
-
-    private List<Accounts> list = new ArrayList<>();
-
-    
-
+    @Autowired
     public AccountServiceImplJpa(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
@@ -33,66 +27,61 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public List<Accounts> getAccountsByUser(int userId) throws SQLException {
-        //return accountRepository.findByAccountsByUser();
-        return accountRepository.findByCustomerId(userId);
+    public List<Accounts> getAccountsByUser(int customerId) throws SQLException {
+        return accountRepository.getAccountsByCustomerCustomerId(customerId);
     }
 
     @Override
-    public Accounts getAccountById(int accountId) throws AccountNotFoundException ,SQLException {
-        Accounts accounts = accountRepository.findById(accountId).orElse(new Accounts());
-        if(accounts.getAccountId() == null){
-            throw new AccountNotFoundException("Account not found.");
+    public Accounts getAccountById(int accountId) {
+        Optional<Accounts> accounts = accountRepository.findById(accountId);
+        if (accounts.isPresent()) {
+            return accounts.get();
         }
-        return accounts;
+        else {
+            throw new AccountNotFoundException("No accounts found linked with this accountId");
+        }
     }
 
     @Override
-    public int addAccount(Accounts accounts) throws SQLException {
+    public int addAccount(Accounts accounts) {
         return accountRepository.save(accounts).getAccountId();
     }
 
     @Override
-    public void updateAccount(Accounts accounts) throws SQLException {
-        // accountRepository.findById(accounts.getAccountId()).map(a -> {
-        //     a.setBalance(accounts.getBalance());
-        //     a.setCustomerId(accounts.getCustomerId());
-        //     return a;
-        // });
+    public void updateAccount(Accounts accounts) {
         accountRepository.save(accounts);
     }
 
     @Override
-    public void deleteAccount(int accountId) throws SQLException {
+    public void deleteAccount(int accountId) {
         accountRepository.deleteById(accountId);
     }
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalance() throws SQLException {
-        return accountRepository.findByOrderByBalance();
+        List<Accounts> sortedAccounts = getAllAccounts();
+        sortedAccounts.sort(Comparator.comparingDouble(Accounts::getBalance)); // Sort by account balance
+        return sortedAccounts;
     }
 
+    // Do not implement these methods
     @Override
     public List<Accounts> getAllAccountsFromArrayList() {
-        return list;
+        return null;
     }
 
     @Override
     public List<Accounts> addAccountToArrayList(Accounts accounts) {
-        list.add(accounts);
-        return list;
+        return null;
     }
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalanceFromArrayList() {
-        List<Accounts> sortedList = list;
-        Collections.sort(sortedList);
-        return sortedList;
+        return null;
     }
 
     @Override
     public void emptyArrayList() {
-        list = new ArrayList<>();
+
     }
-    
 }
